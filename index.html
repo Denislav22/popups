@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pop-up Test</title>
+    <script>
+        function triggerPopups() {
+            for (let i = 0; i < 10; i++) {
+                alert(`This is pop-up #${i + 1}`);
+            }
+        }
+    </script>
+</head>
+<body onload="triggerPopups()">
+    <h1>Test Page</h1>
+    <p>If you see this, the pop-ups have already been triggered!</p>
+</body>
+</html>

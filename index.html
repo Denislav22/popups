@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pop-up Test</title>
+    <title>10 Confirmations</title>
     <script>
-        function triggerPopups() {
-            for (let i = 0; i < 10; i++) {
-                alert(`This is pop-up #${i + 1}`);
+        function blockUntilConfirmed() {
+            let confirmations = 0;
+            while (confirmations < 10) {
+                const result = confirm(`Това е потвърждение #${confirmations + 1}. Натисни "OK", за да продължиш.`);
+                if (result) {
+                    confirmations++;
+                } else {
+                    alert("Трябва да потвърдиш, за да продължиш!");
+                }
             }
+            alert("Благодаря, че потвърди 10 пъти!");
         }
     </script>
 </head>
-<body onload="triggerPopups()">
-    <h1>Test Page</h1>
-    <p>If you see this, the pop-ups have already been triggered!</p>
+<body onload="blockUntilConfirmed()">
+    <h1>Добре дошли!</h1>
+    <p>Трябва да потвърдите 10 пъти, за да отворите тази страница.</p>
 </body>
 </html>
